@@ -1,9 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "motion/react"
-import { ArrowRight, Heart, Sparkles, Star, Gift } from "lucide-react"
-import confetti from "canvas-confetti"
+import { useState } from "react"
+import { Heart, Sparkles, Star, Gift } from "lucide-react"
 
 export default function SpecialMessages({ onNext }) {
     const [currentCard, setCurrentCard] = useState(0)
@@ -39,231 +37,97 @@ export default function SpecialMessages({ onNext }) {
         }
     ]
 
-    const handleNext = () => {
-        console.log('handleNext called, currentCard:', currentCard, 'messages.length:', messages.length)
-        
-        if (currentCard < messages.length - 1) {
-            console.log('Moving to next card')
-            setCurrentCard(currentCard + 1)
-        } else {
-            console.log('Moving to next screen')
-            onNext()
-        }
-    }
-
-    const handleCardClick = () => {
-        confetti({
-            particleCount: 30,
-            spread: 70,
-            origin: { y: 0.6 },
-            colors: ["#ff69b4", "#ff1493", "#9370db", "#8a2be2", "#ffd700"],
-        })
-    }
-
     const currentMessage = messages[currentCard]
     const IconComponent = currentMessage.icon
 
     return (
-        <motion.div
-            className="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8 }}
-        >
-            {/* Background gradients */}
-            <div className="fixed inset-0 z-0 blur-[120px] opacity-20" style={{
-                backgroundImage: "radial-gradient(circle at 20% 25%, rgba(255, 99, 165, 0.6), transparent 40%)",
-            }} />
-
-            <div className="fixed inset-0 z-0 blur-[120px] opacity-20" style={{
-                backgroundImage: "radial-gradient(circle at 80% 80%, rgba(99, 102, 241, 0.6), transparent 40%)",
-            }} />
-
+        <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-br from-purple-950/30 via-black to-purple-950/30">
             <div className="text-center mb-8">
-                <motion.h1
-                    className="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 mb-4"
-                    initial={{ y: -50, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.3 }}
-                >
+                <h1 className="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 mb-4">
                     Special Messages
-                </motion.h1>
-                <motion.p
-                    className="text-lg text-purple-300"
-                    initial={{ y: 30, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.5 }}
-                >
+                </h1>
+                <p className="text-lg text-purple-300">
                     Just for you, MERA PYARA BICHUU 💌
-                </motion.p>
+                </p>
             </div>
 
-            <div className="relative z-10 w-full max-w-md">
-                <motion.div
-                    key={currentCard}
-                    className="relative cursor-pointer"
-                    initial={{ scale: 0.8, opacity: 0, rotateY: -90 }}
-                    animate={{ scale: 1, opacity: 1, rotateY: 0 }}
-                    transition={{ duration: 0.6, type: "spring" }}
-                    onClick={handleCardClick}
-                    whileHover={{ scale: 1.05, rotateY: 5 }}
-                    whileTap={{ scale: 0.95 }}
-                >
-                    <div className={`w-full h-64 bg-gradient-to-br ${currentMessage.bgColor} rounded-2xl shadow-2xl border-2 border-white/20 relative overflow-hidden p-6`}>
-                        {/* Card content */}
-                        <div className="flex flex-col items-center justify-center h-full text-center">
-                            <motion.div
-                                className="mb-4"
-                                animate={{ rotate: [0, 10, -10, 0] }}
-                                transition={{ duration: 2, repeat: Infinity }}
-                            >
-                                <IconComponent className={`w-16 h-16 text-transparent bg-clip-text bg-gradient-to-r ${currentMessage.color}`} />
-                            </motion.div>
-
-                            <motion.h2
-                                className={`text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${currentMessage.color} mb-4`}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.3 }}
-                            >
-                                {currentMessage.title}
-                            </motion.h2>
-
-                            <motion.p
-                                className="text-gray-700 text-lg leading-relaxed"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.5 }}
-                            >
-                                {currentMessage.message}
-                            </motion.p>
-                        </div>
-
-                        {/* Floating elements */}
-                        <motion.div
-                            className="absolute top-4 right-4"
-                            animate={{ rotate: 360 }}
-                            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                        >
-                            <Sparkles className="w-6 h-6 text-yellow-500" />
-                        </motion.div>
-
-                        <motion.div
-                            className="absolute bottom-4 left-4"
-                            animate={{ scale: [1, 1.2, 1] }}
-                            transition={{ duration: 2, repeat: Infinity }}
-                        >
-                            <Heart className="w-6 h-6 text-red-500 fill-current" />
-                        </motion.div>
+            <div className="w-full max-w-md mb-8">
+                <div className={`w-full h-64 bg-gradient-to-br ${currentMessage.bgColor} rounded-2xl shadow-2xl border-2 border-white/20 p-6`}>
+                    <div className="flex flex-col items-center justify-center h-full text-center">
+                        <IconComponent className={`w-16 h-16 text-transparent bg-clip-text bg-gradient-to-r ${currentMessage.color} mb-4`} />
+                        <h2 className={`text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${currentMessage.color} mb-4`}>
+                            {currentMessage.title}
+                        </h2>
+                        <p className="text-gray-700 text-lg leading-relaxed">
+                            {currentMessage.message}
+                        </p>
                     </div>
-                </motion.div>
+                </div>
             </div>
 
             {/* Progress indicator */}
-            <motion.div
-                className="flex justify-center space-x-2 mt-8"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1 }}
-            >
+            <div className="flex justify-center space-x-2 mb-8">
                 {messages.map((_, index) => (
-                    <motion.div
+                    <div
                         key={index}
                         className={`w-3 h-3 rounded-full ${
                             index === currentCard ? 'bg-purple-500' : 'bg-purple-300'
                         }`}
-                        animate={{
-                            scale: index === currentCard ? [1, 1.2, 1] : 1
-                        }}
-                        transition={{ duration: 0.5, repeat: index === currentCard ? Infinity : 0 }}
                     />
                 ))}
-            </motion.div>
+            </div>
 
-            {/* Next button */}
-            <motion.div
-                className="mt-8"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.2 }}
-            >
-                {/* Main button */}
-                <button
-                    onClick={handleNext}
-                    className="bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 hover:from-pink-500 hover:via-purple-500 hover:to-indigo-500 text-white text-xl px-8 py-4 rounded-full shadow-xl border-2 border-white/70 transition-all duration-300 hover:scale-[103%] active:scale-95"
-                    style={{ 
-                        minHeight: '60px',
-                        minWidth: '200px'
-                    }}
-                >
-                    <div className="flex items-center space-x-2">
-                        <span>{currentCard < messages.length - 1 ? 'Next Message' : 'Read Letter'}</span>
-                        <ArrowRight className="w-6 h-6" />
-                    </div>
-                </button>
-                
-                {/* Mobile-specific large touch area */}
-                <div 
-                    className="mt-4 p-6 bg-green-500/20 border-2 border-green-500 rounded-lg"
-                    onClick={handleNext}
-                    onTouchStart={(e) => {
-                        e.preventDefault()
-                        console.log('Mobile touch area touched!')
-                    }}
-                    onTouchEnd={(e) => {
-                        e.preventDefault()
-                        console.log('Mobile touch area released!')
-                        handleNext()
-                    }}
-                    style={{ 
-                        minHeight: '80px',
-                        touchAction: 'manipulation'
-                    }}
-                >
-                    <p className="text-green-400 text-center text-lg font-bold">
-                        📱 TAP HERE FOR NEXT (Mobile)
-                    </p>
-                    <p className="text-green-300 text-center text-sm mt-2">
-                        Card {currentCard + 1} of {messages.length}
-                    </p>
-                </div>
-                
-                {/* Alternative button */}
+            {/* Simple buttons */}
+            <div className="space-y-4">
+                {/* Button 1 */}
                 <button
                     onClick={() => {
-                        console.log('Alternative button clicked!')
+                        alert('Button 1 clicked!')
                         if (currentCard < messages.length - 1) {
                             setCurrentCard(currentCard + 1)
                         } else {
                             onNext()
                         }
                     }}
-                    className="mt-4 bg-blue-500 text-white px-6 py-3 rounded-lg text-lg font-bold"
-                    style={{ 
-                        minHeight: '50px',
-                        minWidth: '150px'
-                    }}
+                    className="bg-red-500 text-white px-8 py-4 rounded-lg text-xl font-bold"
+                    style={{ minWidth: '200px', minHeight: '60px' }}
                 >
-                    🔄 Alternative Next Button
+                    🔴 Button 1 - Next
                 </button>
-                
-                {/* Debug info */}
-                <div className="mt-4 text-white/50 text-center text-sm">
-                    Debug: Card {currentCard + 1} of {messages.length} | Total: {messages.length}
-                </div>
-                
-                {/* Test onNext directly */}
+
+                {/* Button 2 */}
                 <button
                     onClick={() => {
-                        console.log('Testing onNext directly...')
+                        alert('Button 2 clicked!')
+                        if (currentCard < messages.length - 1) {
+                            setCurrentCard(currentCard + 1)
+                        } else {
+                            onNext()
+                        }
+                    }}
+                    className="bg-blue-500 text-white px-8 py-4 rounded-lg text-xl font-bold"
+                    style={{ minWidth: '200px', minHeight: '60px' }}
+                >
+                    🔵 Button 2 - Next
+                </button>
+
+                {/* Button 3 */}
+                <button
+                    onClick={() => {
+                        alert('Button 3 clicked!')
                         onNext()
                     }}
-                    className="mt-2 bg-red-500 text-white px-4 py-2 rounded"
+                    className="bg-green-500 text-white px-8 py-4 rounded-lg text-xl font-bold"
+                    style={{ minWidth: '200px', minHeight: '60px' }}
                 >
-                    🧪 Test onNext Directly
+                    🟢 Button 3 - Skip to Letter
                 </button>
-            </motion.div>
-        </motion.div>
+
+                {/* Debug info */}
+                <div className="text-white/70 text-center text-sm">
+                    Card {currentCard + 1} of {messages.length}
+                </div>
+            </div>
+        </div>
     )
 } 
