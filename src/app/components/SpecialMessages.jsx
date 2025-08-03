@@ -1,10 +1,13 @@
 "use client"
 
 import { useState } from "react"
-import { Heart, Sparkles, Star, Gift } from "lucide-react"
+import { motion, AnimatePresence } from "motion/react"
+import { Heart, Sparkles, Star, Gift, ArrowRight } from "lucide-react"
+import confetti from "canvas-confetti"
 
 export default function SpecialMessages({ onNext }) {
     const [currentCard, setCurrentCard] = useState(0)
+    const [isFlipping, setIsFlipping] = useState(false)
 
     const messages = [
         {
@@ -37,11 +40,36 @@ export default function SpecialMessages({ onNext }) {
         }
     ]
 
+    const handleCardTap = () => {
+        if (isFlipping) return // Prevent multiple taps during animation
+        
+        setIsFlipping(true)
+        
+        // Trigger confetti
+        confetti({
+            particleCount: 30,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ["#ff69b4", "#ff1493", "#9370db", "#8a2be2", "#ffd700"],
+        })
+
+        // Wait for flip animation, then advance
+        setTimeout(() => {
+            if (currentCard < messages.length - 1) {
+                setCurrentCard(prev => prev + 1)
+            } else {
+                onNext()
+            }
+            setIsFlipping(false)
+        }, 600)
+    }
+
     const currentMessage = messages[currentCard]
     const IconComponent = currentMessage.icon
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-br from-purple-950/30 via-black to-purple-950/30">
+            {/* Heading */}
             <div className="text-center mb-8">
                 <h1 className="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 mb-4">
                     Special Messages
@@ -49,85 +77,109 @@ export default function SpecialMessages({ onNext }) {
                 <p className="text-lg text-purple-300">
                     Just for you, MERA PYARA BICHUU 💌
                 </p>
+                <p className="text-sm text-purple-200 mt-2">
+                    Tap the card to see the next message
+                </p>
             </div>
 
+            {/* Interactive Card */}
             <div className="w-full max-w-md mb-8">
-                <div className={`w-full h-64 bg-gradient-to-br ${currentMessage.bgColor} rounded-2xl shadow-2xl border-2 border-white/20 p-6`}>
+                <motion.div
+                    key={currentCard}
+                    className={`w-full h-80 bg-gradient-to-br ${currentMessage.bgColor} rounded-2xl shadow-2xl border-2 border-white/20 p-6 cursor-pointer relative overflow-hidden`}
+                    onClick={handleCardTap}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    animate={{
+                        rotateY: isFlipping ? 180 : 0,
+                        scale: isFlipping ? 1.1 : 1
+                    }}
+                    transition={{ 
+                        duration: 0.6, 
+                        type: "spring",
+                        stiffness: 200
+                    }}
+                    style={{
+                        transformStyle: "preserve-3d"
+                    }}
+                >
+                    {/* Card Content */}
                     <div className="flex flex-col items-center justify-center h-full text-center">
-                        <IconComponent className={`w-16 h-16 text-transparent bg-clip-text bg-gradient-to-r ${currentMessage.color} mb-4`} />
-                        <h2 className={`text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${currentMessage.color} mb-4`}>
+                        <motion.div
+                            className="mb-4"
+                            animate={{ rotate: [0, 10, -10, 0] }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                        >
+                            <IconComponent className={`w-16 h-16 text-transparent bg-clip-text bg-gradient-to-r ${currentMessage.color}`} />
+                        </motion.div>
+
+                        <motion.h2
+                            className={`text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${currentMessage.color} mb-4`}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3 }}
+                        >
                             {currentMessage.title}
-                        </h2>
-                        <p className="text-gray-700 text-lg leading-relaxed">
+                        </motion.h2>
+
+                        <motion.p
+                            className="text-gray-700 text-lg leading-relaxed"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.5 }}
+                        >
                             {currentMessage.message}
-                        </p>
+                        </motion.p>
+
+                        {/* Tap indicator */}
+                        <motion.div
+                            className="absolute bottom-4 right-4 text-gray-500"
+                            animate={{ opacity: [0.5, 1, 0.5] }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                        >
+                            <ArrowRight className="w-6 h-6" />
+                        </motion.div>
                     </div>
-                </div>
+
+                    {/* Floating elements */}
+                    <motion.div
+                        className="absolute top-4 right-4"
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                    >
+                        <Sparkles className="w-6 h-6 text-yellow-500" />
+                    </motion.div>
+
+                    <motion.div
+                        className="absolute bottom-4 left-4"
+                        animate={{ scale: [1, 1.2, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                    >
+                        <Heart className="w-6 h-6 text-red-500 fill-current" />
+                    </motion.div>
+                </motion.div>
             </div>
 
-            {/* Progress indicator */}
+            {/* Progress Dots */}
             <div className="flex justify-center space-x-2 mb-8">
                 {messages.map((_, index) => (
-                    <div
+                    <motion.div
                         key={index}
-                        className={`w-3 h-3 rounded-full ${
-                            index === currentCard ? 'bg-purple-500' : 'bg-purple-300'
+                        className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                            index === currentCard ? 'bg-purple-500 scale-110' : 'bg-purple-300'
                         }`}
+                        animate={{
+                            scale: index === currentCard ? [1, 1.2, 1] : 1
+                        }}
+                        transition={{ duration: 0.5, repeat: index === currentCard ? Infinity : 0 }}
                     />
                 ))}
             </div>
 
-            {/* Simple buttons */}
-            <div className="space-y-4">
-                {/* Button 1 */}
-                <button
-                    onClick={() => {
-                        alert('Button 1 clicked!')
-                        if (currentCard < messages.length - 1) {
-                            setCurrentCard(currentCard + 1)
-                        } else {
-                            onNext()
-                        }
-                    }}
-                    className="bg-red-500 text-white px-8 py-4 rounded-lg text-xl font-bold"
-                    style={{ minWidth: '200px', minHeight: '60px' }}
-                >
-                    🔴 Button 1 - Next
-                </button>
-
-                {/* Button 2 */}
-                <button
-                    onClick={() => {
-                        alert('Button 2 clicked!')
-                        if (currentCard < messages.length - 1) {
-                            setCurrentCard(currentCard + 1)
-                        } else {
-                            onNext()
-                        }
-                    }}
-                    className="bg-blue-500 text-white px-8 py-4 rounded-lg text-xl font-bold"
-                    style={{ minWidth: '200px', minHeight: '60px' }}
-                >
-                    🔵 Button 2 - Next
-                </button>
-
-                {/* Button 3 */}
-                <button
-                    onClick={() => {
-                        alert('Button 3 clicked!')
-                        onNext()
-                    }}
-                    className="bg-green-500 text-white px-8 py-4 rounded-lg text-xl font-bold"
-                    style={{ minWidth: '200px', minHeight: '60px' }}
-                >
-                    🟢 Button 3 - Skip to Letter
-                </button>
-
-                {/* Debug info */}
-                <div className="text-white/70 text-center text-sm">
-                    Card {currentCard + 1} of {messages.length}
-                </div>
+            {/* Footer Text */}
+            <div className="text-white/70 text-center text-sm">
+                Card {currentCard + 1} of {messages.length}
             </div>
         </div>
     )
-} 
+}
