@@ -11,29 +11,29 @@ export default function SpecialMessages({ onNext }) {
 
     const messages = [
         {
-            title: "My Bestie",
-            message: "You're not just my friend, you're my partner in crime! Every adventure with you is pure gold! 🥰",
+            title: "My Everything",
+            message: "You are my everything - my happiness, my strength, my reason to smile every day. Without you, my world would be incomplete. You mean more to me than words can ever express! 💖",
             icon: Heart,
             color: "from-pink-400 to-purple-500",
             bgColor: "from-pink-100 to-purple-100"
         },
         {
-            title: "My Support System",
-            message: "You've been there through my ups and downs, always ready to lift me up! You're my rock! 💪",
+            title: "My Heart's Desire",
+            message: "Every moment with you feels like a dream come true. You have this incredible way of making my heart skip a beat and filling my soul with pure joy. You are truly my heart's desire! 💕",
             icon: Star,
             color: "from-yellow-400 to-orange-500",
             bgColor: "from-yellow-100 to-orange-100"
         },
         {
-            title: "My Laughter Partner",
-            message: "Your jokes are terrible but your smile is everything! You make every day brighter! 😂",
+            title: "My Perfect Match",
+            message: "You are the missing piece that completes my puzzle. Your love, your care, your presence in my life makes everything perfect. You are my perfect match in every way! ✨",
             icon: Sparkles,
             color: "from-blue-400 to-cyan-500",
             bgColor: "from-blue-100 to-cyan-100"
         },
         {
-            title: "My Forever Friend",
-            message: "No matter what life throws at us, I know we'll always have each other's backs! 💖",
+            title: "Forever Yours",
+            message: "No matter what life brings, I promise to be forever yours. You are my today, my tomorrow, and my always. My heart beats only for you, and it always will! 💝",
             icon: Gift,
             color: "from-green-400 to-emerald-500",
             bgColor: "from-green-100 to-emerald-100"
@@ -72,13 +72,13 @@ export default function SpecialMessages({ onNext }) {
             {/* Heading */}
             <div className="text-center mb-8">
                 <h1 className="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 mb-4">
-                    Special Messages
+                    My Heart's Messages
                 </h1>
                 <p className="text-lg text-purple-300">
                     Just for you, MERA PYARA BICHUU 💌
                 </p>
                 <p className="text-sm text-purple-200 mt-2">
-                    Tap the card to see the next message
+                    Tap the card to read my heart's words
                 </p>
             </div>
 
