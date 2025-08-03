@@ -50,19 +50,16 @@ export default function SpecialMessages({ onNext }) {
     const handleNext = () => {
         console.log('handleNext called, currentCard:', currentCard, 'messages.length:', messages.length)
         
-        // Add a small delay to prevent rapid clicking
-        setTimeout(() => {
-            if (currentCard < messages.length - 1) {
-                console.log('Moving to next card')
-                setShowCard(false)
-                setTimeout(() => {
-                    setCurrentCard(currentCard + 1)
-                }, 300)
-            } else {
-                console.log('Moving to next screen')
-                onNext()
-            }
-        }, 100)
+        if (currentCard < messages.length - 1) {
+            console.log('Moving to next card')
+            setShowCard(false)
+            setTimeout(() => {
+                setCurrentCard(currentCard + 1)
+            }, 300)
+        } else {
+            console.log('Moving to next screen')
+            onNext()
+        }
     }
 
     const handleCardClick = () => {
@@ -236,6 +233,21 @@ export default function SpecialMessages({ onNext }) {
                         <span>{currentCard < messages.length - 1 ? 'Next Message' : 'Read Letter'}</span>
                         <ArrowRight className="w-6 h-6" />
                     </motion.div>
+                </button>
+                
+                {/* Simple test button */}
+                <button
+                    onClick={() => {
+                        console.log('Test button clicked!')
+                        if (currentCard < messages.length - 1) {
+                            setCurrentCard(currentCard + 1)
+                        } else {
+                            onNext()
+                        }
+                    }}
+                    className="mt-4 bg-red-500 text-white px-4 py-2 rounded"
+                >
+                    Test Next (Card {currentCard + 1}/{messages.length})
                 </button>
                 
                 {/* Mobile touch fallback area */}

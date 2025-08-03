@@ -7,57 +7,78 @@ import { Volume2, VolumeX, Music } from "lucide-react"
 export default function BackgroundMusic() {
     const [isPlaying, setIsPlaying] = useState(false)
     const [isMuted, setIsMuted] = useState(false)
+    const [audioLoaded, setAudioLoaded] = useState(false)
     const audioRef = useRef(null)
 
     useEffect(() => {
-        // Create audio element using the file from audio folder
+        console.log('BackgroundMusic component mounted')
+        
+        // Create audio element
         const audio = new Audio('/audio/Dil Tu Jaan Tu  Gurnazar  Female Version  Arunima Sharma  Superhit Punjabi Song  Viral Reels.mp3')
         audio.loop = true
         audio.volume = 0.3
         audioRef.current = audio
 
-        // Auto-play the music when component mounts
-        const playMusic = async () => {
-            try {
-                await audio.play()
-                setIsPlaying(true)
-            } catch (error) {
-                console.log('Auto-play failed:', error)
-                // Some browsers block auto-play, so we'll just show as playing
-                setIsPlaying(true)
+        // Add event listeners
+        audio.addEventListener('canplaythrough', () => {
+            console.log('Audio loaded successfully')
+            setAudioLoaded(true)
+        })
+
+        audio.addEventListener('error', (e) => {
+            console.error('Audio loading error:', e)
+        })
+
+        audio.addEventListener('play', () => {
+            console.log('Audio started playing')
+            setIsPlaying(true)
+        })
+
+        audio.addEventListener('pause', () => {
+            console.log('Audio paused')
+            setIsPlaying(false)
+        })
+
+        // Try to play after user interaction
+        const handleUserInteraction = () => {
+            if (audioRef.current && !isPlaying) {
+                audioRef.current.play().catch(error => {
+                    console.log('Play failed on user interaction:', error)
+                })
             }
+            // Remove event listeners after first interaction
+            document.removeEventListener('click', handleUserInteraction)
+            document.removeEventListener('touchstart', handleUserInteraction)
         }
 
-        // Start playing after a short delay to ensure user interaction
-        const timer = setTimeout(() => {
-            playMusic()
-        }, 2000)
+        document.addEventListener('click', handleUserInteraction)
+        document.addEventListener('touchstart', handleUserInteraction)
 
         return () => {
-            clearTimeout(timer)
             if (audioRef.current) {
                 audioRef.current.pause()
                 audioRef.current = null
             }
+            document.removeEventListener('click', handleUserInteraction)
+            document.removeEventListener('touchstart', handleUserInteraction)
         }
     }, [])
 
     const togglePlay = () => {
+        console.log('Toggle play clicked, isPlaying:', isPlaying)
         if (audioRef.current) {
             if (isPlaying) {
                 audioRef.current.pause()
-                setIsPlaying(false)
             } else {
                 audioRef.current.play().catch(error => {
-                    console.log('Audio play failed:', error)
-                    setIsPlaying(true)
+                    console.log('Manual play failed:', error)
                 })
-                setIsPlaying(true)
             }
         }
     }
 
     const toggleMute = () => {
+        console.log('Toggle mute clicked, isMuted:', isMuted)
         if (audioRef.current) {
             if (isMuted) {
                 audioRef.current.volume = 0.3
@@ -81,7 +102,7 @@ export default function BackgroundMusic() {
                 className="bg-white/20 backdrop-blur-sm p-3 rounded-full border border-white/30 hover:bg-white/30 transition-all duration-300"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                title="Music is playing automatically"
+                title={`Music ${isPlaying ? 'Playing' : 'Paused'} - Click to ${isPlaying ? 'Pause' : 'Play'}`}
             >
                 <Music className={`w-5 h-5 ${isPlaying ? 'text-green-400' : 'text-white'}`} />
             </motion.button>
@@ -91,7 +112,7 @@ export default function BackgroundMusic() {
                 className="bg-white/20 backdrop-blur-sm p-3 rounded-full border border-white/30 hover:bg-white/30 transition-all duration-300"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                title="Mute/Unmute Music"
+                title={`${isMuted ? 'Unmute' : 'Mute'} Music`}
             >
                 {isMuted ? (
                     <VolumeX className="w-5 h-5 text-red-400" />
