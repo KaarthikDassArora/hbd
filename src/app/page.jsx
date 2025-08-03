@@ -15,6 +15,7 @@ import { motion } from "motion/react"
 export default function BirthdayApp() {
   const [currentScreen, setCurrentScreen] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
+  const [musicStarted, setMusicStarted] = useState(false)
 
   const birthdayDate = new Date("2025-07-16T00:00:00")
   const [isBirthdayOver, setisBirthdayOver] = useState(new Date().getTime() >= birthdayDate.getTime())

@@ -7,7 +7,6 @@ import confetti from "canvas-confetti"
 
 export default function SpecialMessages({ onNext }) {
     const [currentCard, setCurrentCard] = useState(0)
-    const [showCard, setShowCard] = useState(false)
 
     const messages = [
         {
@@ -40,22 +39,12 @@ export default function SpecialMessages({ onNext }) {
         }
     ]
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setShowCard(true)
-        }, 500)
-        return () => clearTimeout(timer)
-    }, [currentCard])
-
     const handleNext = () => {
         console.log('handleNext called, currentCard:', currentCard, 'messages.length:', messages.length)
         
         if (currentCard < messages.length - 1) {
             console.log('Moving to next card')
-            setShowCard(false)
-            setTimeout(() => {
-                setCurrentCard(currentCard + 1)
-            }, 300)
+            setCurrentCard(currentCard + 1)
         } else {
             console.log('Moving to next screen')
             onNext()
@@ -111,69 +100,64 @@ export default function SpecialMessages({ onNext }) {
             </div>
 
             <div className="relative z-10 w-full max-w-md">
-                <AnimatePresence mode="wait">
-                    {showCard && (
+                <motion.div
+                    key={currentCard}
+                    className="relative cursor-pointer"
+                    initial={{ scale: 0.8, opacity: 0, rotateY: -90 }}
+                    animate={{ scale: 1, opacity: 1, rotateY: 0 }}
+                    transition={{ duration: 0.6, type: "spring" }}
+                    onClick={handleCardClick}
+                    whileHover={{ scale: 1.05, rotateY: 5 }}
+                    whileTap={{ scale: 0.95 }}
+                >
+                    <div className={`w-full h-64 bg-gradient-to-br ${currentMessage.bgColor} rounded-2xl shadow-2xl border-2 border-white/20 relative overflow-hidden p-6`}>
+                        {/* Card content */}
+                        <div className="flex flex-col items-center justify-center h-full text-center">
+                            <motion.div
+                                className="mb-4"
+                                animate={{ rotate: [0, 10, -10, 0] }}
+                                transition={{ duration: 2, repeat: Infinity }}
+                            >
+                                <IconComponent className={`w-16 h-16 text-transparent bg-clip-text bg-gradient-to-r ${currentMessage.color}`} />
+                            </motion.div>
+
+                            <motion.h2
+                                className={`text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${currentMessage.color} mb-4`}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.3 }}
+                            >
+                                {currentMessage.title}
+                            </motion.h2>
+
+                            <motion.p
+                                className="text-gray-700 text-lg leading-relaxed"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.5 }}
+                            >
+                                {currentMessage.message}
+                            </motion.p>
+                        </div>
+
+                        {/* Floating elements */}
                         <motion.div
-                            key={currentCard}
-                            className="relative cursor-pointer"
-                            initial={{ scale: 0.8, opacity: 0, rotateY: -90 }}
-                            animate={{ scale: 1, opacity: 1, rotateY: 0 }}
-                            exit={{ scale: 0.8, opacity: 0, rotateY: 90 }}
-                            transition={{ duration: 0.6, type: "spring" }}
-                            onClick={handleCardClick}
-                            whileHover={{ scale: 1.05, rotateY: 5 }}
-                            whileTap={{ scale: 0.95 }}
+                            className="absolute top-4 right-4"
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
                         >
-                            <div className={`w-full h-64 bg-gradient-to-br ${currentMessage.bgColor} rounded-2xl shadow-2xl border-2 border-white/20 relative overflow-hidden p-6`}>
-                                {/* Card content */}
-                                <div className="flex flex-col items-center justify-center h-full text-center">
-                                    <motion.div
-                                        className="mb-4"
-                                        animate={{ rotate: [0, 10, -10, 0] }}
-                                        transition={{ duration: 2, repeat: Infinity }}
-                                    >
-                                        <IconComponent className={`w-16 h-16 text-transparent bg-clip-text bg-gradient-to-r ${currentMessage.color}`} />
-                                    </motion.div>
-
-                                    <motion.h2
-                                        className={`text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${currentMessage.color} mb-4`}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: 0.3 }}
-                                    >
-                                        {currentMessage.title}
-                                    </motion.h2>
-
-                                    <motion.p
-                                        className="text-gray-700 text-lg leading-relaxed"
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        transition={{ delay: 0.5 }}
-                                    >
-                                        {currentMessage.message}
-                                    </motion.p>
-                                </div>
-
-                                {/* Floating elements */}
-                                <motion.div
-                                    className="absolute top-4 right-4"
-                                    animate={{ rotate: 360 }}
-                                    transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                                >
-                                    <Sparkles className="w-6 h-6 text-yellow-500" />
-                                </motion.div>
-
-                                <motion.div
-                                    className="absolute bottom-4 left-4"
-                                    animate={{ scale: [1, 1.2, 1] }}
-                                    transition={{ duration: 2, repeat: Infinity }}
-                                >
-                                    <Heart className="w-6 h-6 text-red-500 fill-current" />
-                                </motion.div>
-                            </div>
+                            <Sparkles className="w-6 h-6 text-yellow-500" />
                         </motion.div>
-                    )}
-                </AnimatePresence>
+
+                        <motion.div
+                            className="absolute bottom-4 left-4"
+                            animate={{ scale: [1, 1.2, 1] }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                        >
+                            <Heart className="w-6 h-6 text-red-500 fill-current" />
+                        </motion.div>
+                    </div>
+                </motion.div>
             </div>
 
             {/* Progress indicator */}
@@ -205,75 +189,22 @@ export default function SpecialMessages({ onNext }) {
                 transition={{ delay: 1.2 }}
             >
                 <button
-                    onClick={(e) => {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        console.log('Button clicked!')
-                        handleNext()
-                    }}
-                    onTouchStart={(e) => {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        console.log('Touch start detected!')
-                    }}
-                    onTouchEnd={(e) => {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        console.log('Touch end detected!')
-                        handleNext()
-                    }}
-                    className="bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 hover:from-pink-500 hover:via-purple-500 hover:to-indigo-500 text-white text-xl px-8 py-4 rounded-full shadow-xl border-2 border-white/70 transition-all duration-300 hover:scale-[103%] active:scale-95 touch-manipulation"
+                    onClick={handleNext}
+                    className="bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 hover:from-pink-500 hover:via-purple-500 hover:to-indigo-500 text-white text-xl px-8 py-4 rounded-full shadow-xl border-2 border-white/70 transition-all duration-300 hover:scale-[103%] active:scale-95"
                     style={{ 
                         minHeight: '60px',
-                        minWidth: '200px',
-                        WebkitTapHighlightColor: 'transparent'
+                        minWidth: '200px'
                     }}
                 >
-                    <motion.div className="flex items-center space-x-2" whileHover={{ x: 5 }}>
+                    <div className="flex items-center space-x-2">
                         <span>{currentCard < messages.length - 1 ? 'Next Message' : 'Read Letter'}</span>
                         <ArrowRight className="w-6 h-6" />
-                    </motion.div>
+                    </div>
                 </button>
                 
-                {/* Simple test button */}
-                <button
-                    onClick={() => {
-                        console.log('Test button clicked!')
-                        if (currentCard < messages.length - 1) {
-                            setCurrentCard(currentCard + 1)
-                        } else {
-                            onNext()
-                        }
-                    }}
-                    className="mt-4 bg-red-500 text-white px-4 py-2 rounded"
-                >
-                    Test Next (Card {currentCard + 1}/{messages.length})
-                </button>
-                
-                {/* Mobile touch fallback area */}
-                <div 
-                    className="mt-4 p-4 bg-white/10 rounded-lg border border-white/20 touch-manipulation"
-                    onClick={() => {
-                        console.log('Fallback area clicked!')
-                        handleNext()
-                    }}
-                    onTouchStart={(e) => {
-                        e.preventDefault()
-                        console.log('Fallback touch start!')
-                    }}
-                    onTouchEnd={(e) => {
-                        e.preventDefault()
-                        console.log('Fallback touch end!')
-                        handleNext()
-                    }}
-                    style={{ 
-                        minHeight: '50px',
-                        WebkitTapHighlightColor: 'transparent'
-                    }}
-                >
-                    <p className="text-white/70 text-center text-sm">
-                        Tap here if button doesn't work on mobile
-                    </p>
+                {/* Debug info */}
+                <div className="mt-4 text-white/50 text-center text-sm">
+                    Card {currentCard + 1} of {messages.length}
                 </div>
             </motion.div>
         </motion.div>
