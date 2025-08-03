@@ -11,29 +11,29 @@ export default function SpecialMessages({ onNext }) {
 
     const messages = [
         {
-            title: "My Everything 💝",
-            message: "You are my everything - my happiness 🌟, my strength 💪, my reason to smile every day 😊. Without you, my world would be incomplete 🌍. You mean more to me than words can ever express! 💖✨",
+            title: "My Amazing Friend 💝",
+            message: "You're seriously the best friend anyone could ask for! 🌟 Your energy is absolutely contagious, and you have this incredible way of making even the dullest day feel exciting! 😊 You mean so much to me, and I'm grateful for all our silly moments together! 💖✨",
             icon: Heart,
             color: "from-pink-400 to-purple-500",
             bgColor: "from-pink-100 to-purple-100"
         },
         {
-            title: "My Heart's Desire 💕",
-            message: "Every moment with you feels like a dream come true 💭✨. You have this incredible way of making my heart skip a beat 💓 and filling my soul with pure joy 🥰. You are truly my heart's desire! 💕💫",
+            title: "My Partner in Crime 😜",
+            message: "Remember all those crazy adventures we've been on? 💭✨ You're the perfect partner for all my silly ideas and spontaneous plans! You always know how to make me laugh until my stomach hurts 🥰. Life is so much more fun with you around! 💕💫",
             icon: Star,
             color: "from-yellow-400 to-orange-500",
             bgColor: "from-yellow-100 to-orange-100"
         },
         {
-            title: "My Perfect Match 💑",
-            message: "You are the missing piece that completes my puzzle 🧩. Your love 💕, your care 🤗, your presence in my life makes everything perfect ✨. You are my perfect match in every way! 💑💖",
+            title: "My Daily Dose of Joy 🌈",
+            message: "You're like my daily dose of happiness 🧩! Whether we're sharing inside jokes that no one else gets or just hanging out in comfortable silence, it's always perfect with you around 🤗. You make ordinary moments feel special ✨. That's just how awesome you are! 💑💖",
             icon: Sparkles,
             color: "from-blue-400 to-cyan-500",
             bgColor: "from-blue-100 to-cyan-100"
         },
         {
-            title: "Forever Yours 💝",
-            message: "No matter what life brings, I promise to be forever yours 💍. You are my today 🌅, my tomorrow 🌅, and my always 💕. My heart beats only for you 💓, and it always will! 💝💖",
+            title: "My Forever Friend 💝",
+            message: "No matter what life throws our way, I know we'll always have each other's backs! 🌅 You're my today, my tomorrow, and all the good times in between! 🌅 Our friendship means the world to me 💕, and I can't wait to see what fun things we'll do next! 💝💖",
             icon: Gift,
             color: "from-green-400 to-emerald-500",
             bgColor: "from-green-100 to-emerald-100"

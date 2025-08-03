@@ -12,18 +12,22 @@ export default function Letter() {
     const [showCursor, setShowCursor] = useState(true)
     const letterText = `MERA PYARA BICHUU,
 
-On your special day, I wanted to take a moment to tell you how much you mean to me! You're not just my bestie, you're my partner in crime, my go-to person for everything, and honestly, the best friend anyone could ask for! 🥰
+Happy Birthday pagal! 🎉 On your special day, I just had to write you this little note to remind you how absolutely wonderful you are! 
 
-You have this incredible way of making me laugh even when I'm having the worst day, and your positive energy is absolutely contagious! Whether we're being silly together, sharing our deepest secrets, or just being our weird selves, every moment with you is pure gold! ✨
+You're that one person who can make me laugh until my stomach hurts with just one silly text, and somehow you always know exactly what to say to make everything better! You're not just my friend, you're my partner in all things fun and slightly crazy! 😜
 
-Thank you for being the amazing, supportive, and absolutely hilarious person that you are. You make my world so much brighter and more fun just by being you! 
+I mean, who else would put up with my weird jokes and random midnight calls? You're stuck with me and all my quirks, but somehow you still manage to make every moment together feel like pure magic! ✨
 
-Here's to another year of our epic friendship, countless adventures, and endless laughter! You deserve all the happiness in the world! 🎂🎉
+You have this amazing ability to turn even the most ordinary day into something special just by being you. Whether we're sharing inside jokes that no one else understands or just sitting in comfortable silence, it's always perfect with you around!
 
-Happy Birthday, my amazing bestie! 🎈
+Thanks for being the incredible person that you are - hilarious, kind, and absolutely irreplaceable! You make life so much more colorful and fun! 
 
-With all my love and friendship,
-Your Friend Forever 💖`
+Here's to another year of your amazingness, countless memories, and all the laughter we can squeeze in! You deserve all the happiness, cake, and birthday wishes coming your way! 🎂🎈
+
+Happy Birthday, you beautiful soul! 🎁
+
+With lots of love and endless giggles,
+Your Forever Friend 💖`
 
     useEffect(() => {
         if (showText) {
