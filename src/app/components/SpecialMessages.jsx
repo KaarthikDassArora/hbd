@@ -188,6 +188,7 @@ export default function SpecialMessages({ onNext }) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.2 }}
             >
+                {/* Main button */}
                 <button
                     onClick={handleNext}
                     className="bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 hover:from-pink-500 hover:via-purple-500 hover:to-indigo-500 text-white text-xl px-8 py-4 rounded-full shadow-xl border-2 border-white/70 transition-all duration-300 hover:scale-[103%] active:scale-95"
@@ -202,10 +203,66 @@ export default function SpecialMessages({ onNext }) {
                     </div>
                 </button>
                 
+                {/* Mobile-specific large touch area */}
+                <div 
+                    className="mt-4 p-6 bg-green-500/20 border-2 border-green-500 rounded-lg"
+                    onClick={handleNext}
+                    onTouchStart={(e) => {
+                        e.preventDefault()
+                        console.log('Mobile touch area touched!')
+                    }}
+                    onTouchEnd={(e) => {
+                        e.preventDefault()
+                        console.log('Mobile touch area released!')
+                        handleNext()
+                    }}
+                    style={{ 
+                        minHeight: '80px',
+                        touchAction: 'manipulation'
+                    }}
+                >
+                    <p className="text-green-400 text-center text-lg font-bold">
+                        📱 TAP HERE FOR NEXT (Mobile)
+                    </p>
+                    <p className="text-green-300 text-center text-sm mt-2">
+                        Card {currentCard + 1} of {messages.length}
+                    </p>
+                </div>
+                
+                {/* Alternative button */}
+                <button
+                    onClick={() => {
+                        console.log('Alternative button clicked!')
+                        if (currentCard < messages.length - 1) {
+                            setCurrentCard(currentCard + 1)
+                        } else {
+                            onNext()
+                        }
+                    }}
+                    className="mt-4 bg-blue-500 text-white px-6 py-3 rounded-lg text-lg font-bold"
+                    style={{ 
+                        minHeight: '50px',
+                        minWidth: '150px'
+                    }}
+                >
+                    🔄 Alternative Next Button
+                </button>
+                
                 {/* Debug info */}
                 <div className="mt-4 text-white/50 text-center text-sm">
-                    Card {currentCard + 1} of {messages.length}
+                    Debug: Card {currentCard + 1} of {messages.length} | Total: {messages.length}
                 </div>
+                
+                {/* Test onNext directly */}
+                <button
+                    onClick={() => {
+                        console.log('Testing onNext directly...')
+                        onNext()
+                    }}
+                    className="mt-2 bg-red-500 text-white px-4 py-2 rounded"
+                >
+                    🧪 Test onNext Directly
+                </button>
             </motion.div>
         </motion.div>
     )
