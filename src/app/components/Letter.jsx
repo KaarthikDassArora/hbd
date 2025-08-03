@@ -27,7 +27,7 @@ Here's to another year of your amazingness, countless memories, and all the laug
 Happy Birthday, you beautiful soul! 🎁
 
 With lots of love and endless giggles,
-Your Forever Friend 💖`
+Your Forever Bestie 💖`
 
     useEffect(() => {
         if (showText) {
